@@ -1,6 +1,6 @@
 import java.lang.reflect.InvocationTargetException;
 
-public class Node<E>{
+public class Node<E> implements Cloneable{
     private E value;
     private Node<E> next;
     public Node(E value, Node<E> next) {
@@ -26,11 +26,24 @@ public class Node<E>{
         this.next= next;
     }
 
-    public boolean isContained(E other){
+    public Node<E> isContained(E other){
         if (this.value.equals(other))
-            return true;
+            return this;
         if (this.next == null)
-            return false;
+            return null;
         return next.isContained(other);
     }
+@Override
+    public Node<E> clone() {
+        try {
+            Node<E> clonedNode = (Node<E>) super.clone();
+            if (this.next != null) {
+                clonedNode.next = this.next.clone();
+            }
+            return clonedNode;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Cloning not supported", e);
+        }
+    }
 }
+
