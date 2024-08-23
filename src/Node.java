@@ -50,17 +50,24 @@ public class Node<E> implements Cloneable{
             person.incraementCounter();
         }
     }
-        @Override
+    @Override
     public Node<E> clone() {
         try {
             Node<E> clonedNode = (Node<E>) super.clone();
             if (this.next != null) {
                 clonedNode.next = this.next.clone();
             }
+            if (this.value instanceof Cloneable) {
+                java.lang.reflect.Method cloneMethod = this.value.getClass().getMethod("clone");
+                clonedNode.value = (E) cloneMethod.invoke(this.value);
+            } else {
+                clonedNode.value = this.value;
+            }
             return clonedNode;
-        } catch (CloneNotSupportedException e) {
+        } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 }
+
 

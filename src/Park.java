@@ -26,9 +26,7 @@ public class Park
                 for (int j = i; j < counter - 1; j++) {
                     rides[j] = rides[j + 1];
                 }
-                rides[counter - 1] = null;
-                counter--;
-                return;
+                rides[--counter] = null;
             }
         }
     }

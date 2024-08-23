@@ -1,8 +1,8 @@
 
-public class Person {
+public class Person implements Cloneable{
     private final String studentName;
     private final int id;
-    private final Person friend;
+    private Person friend;
     private int friendCounter;
 
     public Person(String studentName, int id, Person friend) {
@@ -45,6 +45,18 @@ public class Person {
     public void incraementCounter()
     {
         this.friendCounter++;
+    }
+    @Override
+    public Person clone() {
+        try {
+            Person cloned = (Person) super.clone();
+            if (this.friend != null) {
+                cloned.friend = this.friend.clone();
+            }
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException();
+        }
     }
 
 

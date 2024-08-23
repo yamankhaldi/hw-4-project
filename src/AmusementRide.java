@@ -11,10 +11,6 @@ public class AmusementRide {
         this.maxCapacity = maxCapacity;
     }
 
-    public void addPerson(Person person) {
-        israeliQueue.add(person, person.getFriend(person));
-    }
-
 
     public void startRide() {
         if (israeliQueue.isEmpty()) {
@@ -30,5 +26,8 @@ public class AmusementRide {
         }
 
 
+    }
+    public void addPerson(Person person) {
+        israeliQueue.add(person, person.getFriend(person));
     }
 }

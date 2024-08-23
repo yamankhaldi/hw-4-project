@@ -88,30 +88,33 @@ public class IsraeliQueue<E> implements Iterable<E>, Cloneable {
 
     @Override
     public IsraeliQueue<E> clone() {
-        IsraeliQueue<E> cloneQueue = new IsraeliQueue<>();
+        IsraeliQueue<E> clonedQueue = new IsraeliQueue<>();
         try {
             Node<E> current = head;
             while (current != null) {
-                E clonedElement = cloneTheElement(current.getValue());
-                cloneQueue.add(clonedElement);
+                E element = current.getValue();
+                if (!(element instanceof Cloneable)) {
+                    return null;
+                }
+                E clonedElement = cloneElement(element);
+                if (clonedElement == null) {
+                    return null;
+                }
+
+                clonedQueue.add(clonedElement);
                 current = current.getNext();
             }
         } catch (Exception e) {
             return null;
         }
-        return cloneQueue;
+        return clonedQueue;
     }
 
-    private E cloneTheElement(E element) throws CloneNotSupportedException {
-        if (element instanceof Cloneable) {
-            try {
-                java.lang.reflect.Method cloneMethod = element.getClass().getMethod("clone");
-                return (E) cloneMethod.invoke(element);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                throw new CloneNotSupportedException();
-            }
-        } else {
-            throw new CloneNotSupportedException();
+    private E cloneElement(E element) {
+        try {
+            return (E) element.getClass().getMethod("clone").invoke(element);
+        } catch (Exception e) {
+            return null;
         }
     }
 
