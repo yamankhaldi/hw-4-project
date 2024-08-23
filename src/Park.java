@@ -1,5 +1,6 @@
 public class Park
 {
+    private final  int numRides = 5 ;
     private  String parkName;
     private AmusementRide[] rides;
     private int counter;
@@ -8,18 +9,15 @@ public class Park
 
     public Park(String parkName) {
         this.parkName = parkName;
-        rides = new AmusementRide[5];
+        rides = new AmusementRide[numRides];
         counter = 0 ;
     }
     public  void  add (AmusementRide newRide)
     {
-        if (counter  >= 5)
-            System.out.println("Cannot add more rides. Maximum limit reached.");
-        else
+        if (counter < numRides)
         {
             rides[counter++] = newRide;
         }
-
 
     }
     public void removeRide(AmusementRide newRide) {
@@ -30,11 +28,9 @@ public class Park
                 }
                 rides[counter - 1] = null;
                 counter--;
-                System.out.println("Ride removed from the park.");
                 return;
             }
         }
-        System.out.println("Ride not found in the park.");
     }
     public void startRides() {
         for (int i = 0; i < counter; i++) {
@@ -48,6 +44,5 @@ public class Park
                 return;
             }
         }
-        System.out.println("Ride not found in the park.");
     }
 }

@@ -15,6 +15,7 @@ public class Node<E> implements Cloneable{
     }
 
     public Node<E> getNext() {
+
         return next;
     }
 
@@ -26,14 +27,30 @@ public class Node<E> implements Cloneable{
         this.next= next;
     }
 
-    public Node<E> isContained(E other){
+ public Node<E> isContained(E other){
         if (this.value.equals(other))
             return this;
         if (this.next == null)
             return null;
         return next.isContained(other);
     }
-@Override
+
+    public int returnCountFriends(Node<E> personNode) {
+        if (personNode != null && personNode.getValue() instanceof Person) {
+            Person person = (Person) personNode.getValue();
+            return person.getFriendCounter();
+
+        }
+        return 0;
+    }
+
+    public void incrementFriendCounterInPerson(Node<E> personNode) {
+        if (personNode != null && personNode.getValue() instanceof Person) {
+            Person person = (Person) personNode.getValue();
+            person.incraementCounter();
+        }
+    }
+        @Override
     public Node<E> clone() {
         try {
             Node<E> clonedNode = (Node<E>) super.clone();
@@ -42,7 +59,7 @@ public class Node<E> implements Cloneable{
             }
             return clonedNode;
         } catch (CloneNotSupportedException e) {
-            throw new RuntimeException("Cloning not supported", e);
+            throw new RuntimeException();
         }
     }
 }

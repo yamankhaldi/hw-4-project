@@ -1,17 +1,18 @@
+
 public class AmusementRide {
 
     private String name;
-    private  IsraeliQueue <Person>  israeliQueue;
+    private IsraeliQueue<Person> israeliQueue;
     private int maxCapacity;
 
-    public AmusementRide(String name , int maxCapacity) {
+    public AmusementRide(String name, int maxCapacity) {
         this.name = name;
         this.israeliQueue = new IsraeliQueue<>();
         this.maxCapacity = maxCapacity;
     }
 
     public void addPerson(Person person) {
-        israeliQueue.add(person , person.getFriend(person));
+        israeliQueue.add(person, person.getFriend(person));
     }
 
 
@@ -27,22 +28,7 @@ public class AmusementRide {
             Person person = israeliQueue.remove();
             System.out.println(person.getName());
         }
+
+
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

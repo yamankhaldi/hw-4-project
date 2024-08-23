@@ -15,7 +15,7 @@ public class IsraeliQueue<E> implements Iterable<E>, Cloneable {
     }
 
     public void add(E element, E friend) throws InvalidInputException {
-        if (element == null ) {
+        if (element == null) {
             throw new InvalidInputException();
         }
 
@@ -26,7 +26,15 @@ public class IsraeliQueue<E> implements Iterable<E>, Cloneable {
         } else {
             Node<E> friendNode = head.isContained(friend);
             if (friendNode != null) {
-                addAfterFriend(friendNode, newNode);
+                friendNode.incrementFriendCounterInPerson(friendNode);
+                int friendCount = friendNode.returnCountFriends(friendNode);
+                Node<E> current = friendNode;
+                for (int i = 1; i < friendCount; i++) {
+                    if (current.getNext() != null ) {
+                        current = current.getNext();
+                    }
+                }
+                addAfterFriend(current, newNode);
             } else {
                 tail.setNext(newNode);
                 tail = newNode;
@@ -37,7 +45,6 @@ public class IsraeliQueue<E> implements Iterable<E>, Cloneable {
     }
 
     private void addAfterFriend(Node<E> friendNode, Node<E> newNode) {
-
         newNode.setNext(friendNode.getNext());
         friendNode.setNext(newNode);
 
@@ -46,13 +53,14 @@ public class IsraeliQueue<E> implements Iterable<E>, Cloneable {
         }
     }
 
+
     public void add(E element) throws InvalidInputException {
         add(element , null);
     }
 
     public E remove() throws EmptyQueueException {
         if (head == null) {
-            throw new EmptyQueueException("The queue is empty");
+            throw new EmptyQueueException();
         }
 
         E value = head.getValue();
@@ -69,7 +77,7 @@ public class IsraeliQueue<E> implements Iterable<E>, Cloneable {
 
     public E peek() throws EmptyQueueException {
         if (head == null) {
-            throw new EmptyQueueException("The queue is empty");
+            throw new EmptyQueueException();
         }
         return head.getValue();
     }
@@ -84,28 +92,26 @@ public class IsraeliQueue<E> implements Iterable<E>, Cloneable {
         try {
             Node<E> current = head;
             while (current != null) {
-                E clonedElement = cloneElement(current.getValue());
+                E clonedElement = cloneTheElement(current.getValue());
                 cloneQueue.add(clonedElement);
                 current = current.getNext();
             }
-        } catch (CloneNotSupportedException e) {
-            // Handle cloning failure
-            System.out.println("Cloning failed: " + e.getMessage());
+        } catch (Exception e) {
             return null;
         }
         return cloneQueue;
     }
 
-    private E cloneElement(E element) throws CloneNotSupportedException {
+    private E cloneTheElement(E element) throws CloneNotSupportedException {
         if (element instanceof Cloneable) {
             try {
                 java.lang.reflect.Method cloneMethod = element.getClass().getMethod("clone");
                 return (E) cloneMethod.invoke(element);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                throw new CloneNotSupportedException("Clone method threw an exception: " + e.getCause());
+                throw new CloneNotSupportedException();
             }
         } else {
-            throw new CloneNotSupportedException("Element is not cloneable");
+            throw new CloneNotSupportedException();
         }
     }
 
@@ -135,42 +141,5 @@ public class IsraeliQueue<E> implements Iterable<E>, Cloneable {
 
     public boolean isEmpty() {
         return head == null;
-    }
-
-    private static class Node<E> {
-        private E value;
-        private Node<E> next;
-
-        public Node(E value) {
-            this.value = value;
-            this.next = null;
-        }
-
-        public E getValue() {
-            return value;
-        }
-
-        public void setValue(E value) {
-            this.value = value;
-        }
-
-        public Node<E> getNext() {
-            return next;
-        }
-
-        public void setNext(Node<E> next) {
-            this.next = next;
-        }
-
-        public Node<E> isContained(E value) {
-            Node<E> current = this;
-            while (current != null) {
-                if (current.getValue().equals(value)) {
-                    return current;
-                }
-                current = current.getNext();
-            }
-            return null;
-        }
     }
 }
